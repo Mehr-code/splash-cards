@@ -7,7 +7,7 @@
 
 ## 📸 پیش‌نمایش برنامه
 
-![Screenshot](./Screenshot.jpg)
+<img src="./Screenshot.jpg" alt="Screenshot" width="250" style="border-radius: 12px; border: 1px solid #ccc;" />
 
 ---
 
