@@ -1,50 +1,95 @@
-# Welcome to your Expo app 👋
+````markdown
+# 🌊 Splash Cards
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+سلام! این پروژه یک اپلیکیشن موبایل با **React Native و Expo** هست که کارت های عضویت استخر من رو مدیریت میکنه و اولین تجربه من برای برنامه نویسی موبایل هست.. 🃏✨
 
-## Get started
+---
 
-1. Install dependencies
+## 📸 پیش‌نمایش برنامه
 
-   ```bash
-   npm install
-   ```
+![Screenshot](./Screenshot.jpg)
 
-2. Start the app
+---
 
-   ```bash
-   npx expo start
-   ```
+## 🚀 شروع سریع
 
-In the output, you'll find options to open the app in a
+### 1️⃣ نصب وابستگی‌ها
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+```bash
+npm install
+```
+````
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
+### 2️⃣ اجرای برنامه
 
-## Get a fresh project
+```bash
+npx expo start
+```
 
-When you're ready, run:
+بعد از اجرا می‌تونی برنامه رو روی:
+
+- 📱 **گوشی اندروید خودت** (با Expo Go یا development build)
+- 🖥️ **شبیه‌ساز اندروید/ iOS**
+- 🌐 **وب**
+
+باز کنی و تست کنی.
+
+### 3️⃣ مسیر فایل‌ها
+
+تمام کدهای اصلی داخل پوشه **app/** هست و پروژه از **file-based routing** استفاده می‌کنه.
+
+---
+
+## 🧹 ریست پروژه
+
+اگه خواستی یه پروژه تمیز و تازه شروع کنی:
 
 ```bash
 npm run reset-project
 ```
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+این دستور:
 
-## Learn more
+- کد فعلی رو به **app-example/** منتقل می‌کنه
+- یه پوشه **app/** خالی می‌سازه تا از صفر شروع کنی
 
-To learn more about developing your project with Expo, look at the following resources:
+---
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+## 💡 ویژگی‌ها
 
-## Join the community
+- مدیریت کارت‌های استخر با ذخیره وضعیت در **AsyncStorage**
+- تشخیص هفته جاری بر اساس **تقویم جلالی** 🗓️
+- افکت‌ها و انیمیشن‌های جذاب روی کارت‌ها ✨
+- دارک مود و طراحی مدرن 🌑
+- فونت فارسی **وزیر** برای تجربه کاربری بهتر 🖋️
 
-Join our community of developers creating universal apps.
+---
 
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+## 🛠️ پیش‌نیازها
+
+- Node.js (نسخه 18 یا بالاتر توصیه میشه)
+- Expo SDK 54
+- اندروید استودیو یا شبیه‌ساز برای تست
+
+---
+
+## 📚 یادگیری بیشتر
+
+- [مستندات Expo](https://docs.expo.dev)
+- [React Native](https://reactnative.dev/)
+- [Jalaali.js برای تقویم جلالی](https://github.com/jalaali/jalaali-js)
+
+---
+
+## 🌐 جامعه و پشتیبانی
+
+- [کانال Discord Expo](https://chat.expo.dev) برای سوالات و کمک
+- [گیت‌هاب Expo](https://github.com/expo/expo) برای مشارکت و مشاهده کدهای متن‌باز
+
+---
+
+💌 از استفاده و توسعه پروژه لذت ببر!
+
+```
+
+```
