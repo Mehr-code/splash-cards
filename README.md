@@ -7,7 +7,10 @@
 
 ## 📸 پیش‌نمایش برنامه
 
-<img src="./Screenshot.jpg" alt="Screenshot" width="250" style="border-radius: 12px; border: 1px solid #ccc;" />
+<div style="text-align:center;">
+  <img src="./Screenshot.jpg" alt="Screenshot" width="250" style="border-radius: 12px; border: 1px solid #ccc;" />
+</div>
+
 
 ---
 
