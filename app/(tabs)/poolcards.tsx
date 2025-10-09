@@ -1,8 +1,7 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
-// @ts-ignore
-import MaskedView from "@react-native-masked-view/masked-view";
 import { useFonts } from "expo-font";
 import { LinearGradient } from "expo-linear-gradient";
+import jalaali from "jalaali-js";
 import React, { useEffect, useState } from "react";
 import {
   ActivityIndicator,
@@ -13,13 +12,14 @@ import {
   View,
 } from "react-native";
 
-// @ts-ignore
-import jalaali from "jalaali-js";
+const CARD_KEYS = [
+  "کارت بابا 🧔‍♂️",
+  "کارت مامان 👩",
+  "کارت خودم 👽",
+  "کارت داداش 👦",
+];
 
-const CARD_KEYS = ["کارت بابا", "کارت مامان", "کارت خودم", "کارت داداش"];
-
-// شماره هفته جلالی شنبه شروع
-function getJalaliWeekNumber(date: Date) {
+function getJalaliWeekNumber(date) {
   const { jy } = jalaali.toJalaali(date);
   const dayOfWeek = (date.getDay() + 6) % 7;
   const firstDayJalali = jalaali.toGregorian(jy, 1, 1);
@@ -40,12 +40,12 @@ export default function PoolCards() {
     VazirBold: require("../../assets/fonts/Vazir-Bold.ttf"),
   });
 
-  const [cards, setCards] = useState<{ [key: string]: boolean }>({});
+  const [cards, setCards] = useState({});
   const [glowAnim] = useState(new Animated.Value(0));
 
   useEffect(() => {
     const loadCards = async () => {
-      let storedCards: { [key: string]: boolean } = {};
+      let storedCards = {};
       const today = new Date();
       const currentWeek = getJalaliWeekNumber(today);
       const lastWeek = await AsyncStorage.getItem("lastResetWeek");
@@ -62,28 +62,26 @@ export default function PoolCards() {
           storedCards[key] = value === "used";
         }
       }
-
       setCards(storedCards);
     };
     loadCards();
   }, []);
 
-  const handleCardPress = async (key: string) => {
+  const handleCardPress = async (key) => {
     const newCards = { ...cards, [key]: true };
     setCards(newCards);
     await AsyncStorage.setItem(key, "used");
 
-    // افکت نئون کوتاه
     glowAnim.setValue(0);
     Animated.timing(glowAnim, {
       toValue: 1,
-      duration: 500,
+      duration: 600,
       useNativeDriver: true,
     }).start();
   };
 
   const resetWeek = async () => {
-    let resetCards: { [key: string]: boolean } = {};
+    let resetCards = {};
     for (let key of CARD_KEYS) {
       resetCards[key] = false;
       await AsyncStorage.removeItem(key);
@@ -97,134 +95,116 @@ export default function PoolCards() {
 
   if (!fontsLoaded) {
     return (
-      <View
-        style={[
-          styles.container,
-          { justifyContent: "center", alignItems: "center" },
-        ]}
-      >
-        <ActivityIndicator size="large" color="#0ff" />
-        <Text style={{ color: "#0ff", marginTop: 10 }}>در حال بارگذاری...</Text>
+      <View style={styles.loading}>
+        <ActivityIndicator size="large" color="#aaa" />
+        <Text style={{ color: "#ccc", marginTop: 10 }}>در حال بارگذاری...</Text>
       </View>
     );
   }
 
   return (
-    <View style={styles.container}>
-      <MaskedView
-        maskElement={<Text style={styles.name}>وقتت بخیر مهر 😎</Text>}
-      >
-        <LinearGradient
-          colors={["#ff00ff", "#00ffff"]}
-          start={{ x: 0, y: 0 }}
-          end={{ x: 1, y: 1 }}
-          style={{ flex: 1 }}
-        />
-      </MaskedView>
+    <LinearGradient
+      colors={["#121212", "#1b1b1b", "#0e0e0e"]}
+      style={styles.container}
+    >
+      <Text style={styles.header}>وقتت بخیر مهر 😎</Text>
 
       <Text style={styles.title}>کارت‌های استخر</Text>
 
       <View style={styles.cardsContainer}>
-        {CARD_KEYS.map((key) => {
-          const glow = glowAnim.interpolate({
-            inputRange: [0, 1],
-            outputRange: [0, 0.7],
-          });
-          return (
-            <Animated.View
-              key={key}
-              style={[
-                styles.cardWrapper,
-                { shadowOpacity: cards[key] ? 0.2 : glow },
-              ]}
+        {CARD_KEYS.map((key) => (
+          <Animated.View key={key} style={styles.cardWrapper}>
+            <TouchableOpacity
+              style={[styles.card, cards[key] && styles.cardUsed]}
+              onPress={() => handleCardPress(key)}
+              disabled={cards[key]}
+              activeOpacity={0.7}
             >
-              <TouchableOpacity
-                style={[styles.card, cards[key] ? styles.cardUsed : null]}
-                onPress={() => handleCardPress(key)}
-                disabled={cards[key]}
-              >
-                <Text style={styles.cardText}>{key}</Text>
-              </TouchableOpacity>
-            </Animated.View>
-          );
-        })}
+              <Text style={styles.cardText}>{key}</Text>
+            </TouchableOpacity>
+          </Animated.View>
+        ))}
       </View>
 
       <TouchableOpacity style={styles.resetButton} onPress={resetWeek}>
-        <Text style={styles.resetButtonText}>ریست هفته</Text>
+        <Text style={styles.resetButtonText}>ریست هفته ♻️</Text>
       </TouchableOpacity>
-    </View>
+    </LinearGradient>
   );
 }
 
 const styles = StyleSheet.create({
+  loading: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "#121212",
+  },
   container: {
     flex: 1,
-    backgroundColor: "#333",
     paddingHorizontal: 20,
+    paddingVertical: 40,
     justifyContent: "center",
     alignItems: "center",
   },
-  name: {
+  header: {
+    fontSize: 26,
     fontFamily: "VazirBold",
-    fontSize: 36,
-    color: "#deddde",
-    textShadowOffset: { width: 2, height: 2 },
-    textShadowRadius: 6,
-    letterSpacing: 1.2,
-    fontWeight: "bold",
-    marginBottom: 25,
+    color: "#e6e6e6",
+    textAlign: "center",
+    marginBottom: 30,
+    letterSpacing: 0.5,
   },
   title: {
-    fontSize: 28,
-    marginBottom: 30,
-    fontWeight: "bold",
-    color: "#fff",
+    fontSize: 22,
+    marginBottom: 20,
+    color: "#bbb",
     fontFamily: "VazirBold",
     textAlign: "center",
   },
   cardsContainer: {
     flexDirection: "column",
     width: "100%",
-    gap: 20,
+    gap: 15,
   },
   cardWrapper: {
-    shadowColor: "#fff",
-    shadowOffset: { width: 0, height: 0 },
-    shadowRadius: 10,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowRadius: 4,
+    shadowOpacity: 0.3,
   },
   card: {
-    paddingVertical: 25,
-    backgroundColor: "#fff",
+    paddingVertical: 22,
+    backgroundColor: "#deddde",
     justifyContent: "center",
     alignItems: "center",
-    borderRadius: 15,
+    borderRadius: 12,
     borderWidth: 1,
-    borderColor: "#222",
+    borderColor: "#2f2f2f",
+    elevation: 3,
+    direction: "rtl",
   },
   cardUsed: {
-    opacity: 0.5,
-    backgroundColor: "red",
-    color: "#fff",
+    opacity: 0.6,
+    backgroundColor: "#fa5d5dff",
   },
   cardText: {
     color: "#000",
     fontSize: 18,
     fontFamily: "VazirRegular",
-    fontWeight: "bold",
   },
   resetButton: {
-    marginTop: 25,
-    paddingVertical: 15,
+    marginTop: 35,
+    paddingVertical: 12,
     paddingHorizontal: 50,
-    backgroundColor: "yellow",
-    borderRadius: 12,
-    elevation: 3,
+    backgroundColor: "#2b2b2b",
+    borderRadius: 10,
+    borderWidth: 1,
+    borderColor: "#444",
   },
   resetButtonText: {
-    color: "#0a0a0a",
-    fontSize: 18,
+    color: "#ddd",
+    fontSize: 16,
     fontFamily: "VazirBold",
-    fontWeight: "bold",
   },
 });
